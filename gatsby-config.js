@@ -39,5 +39,28 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: `gatsby-source-mysql`,
+      options: {
+        connectionDetails: {
+          host: 'localhost',
+          user: 'root',
+          password: '',
+          database: 'simple_api',
+        },
+        queries: [
+          {
+            statement: 'SELECT * FROM customers',
+            idFieldName: 'CustomerID',
+            name: 'customers',
+          },
+          {
+            statement: 'SELECT * FROM course_details',
+            idFieldName: 'course_id',
+            name: 'courses',
+          },
+        ],
+      },
+    },
   ],
 }
