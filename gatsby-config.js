@@ -7,6 +7,11 @@
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
+
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -43,10 +48,10 @@ module.exports = {
       resolve: `gatsby-source-mysql`,
       options: {
         connectionDetails: {
-          host: 'localhost',
-          user: 'root',
-          password: '',
-          database: 'simple_api',
+          database: process.env.MYSQL_DATABASE,
+          host: process.env.MYSQL_HOST,
+          password: process.env.MYSQL_PASSWORD,
+          user: process.env.MYSQL_USER,
         },
         queries: [
           {
