@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "files": [
+    "cypress/e2e/accessibility.cy.ts",
+    "cypress/support/e2e.ts"
+  ]
+}
