@@ -62,7 +62,7 @@ if (process.env.CYPRESS_SUPPORT == 'y')
           Address: `{{address.streetAddress}}`,
         },
         seed: 123456,
-        type: `Customers`,
+        type: `MysqlCustomers`,
       },
     }
   );

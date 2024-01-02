@@ -9,7 +9,7 @@ const SecondPage = () => {
   const data = useStaticQuery(
     graphql`
       query {
-        allCustomers {
+        allMysqlCustomers {
           edges {
             node {
               CustomerID
@@ -41,7 +41,7 @@ const SecondPage = () => {
           </tr>
         </thead>
         <tbody>
-          {data.allCustomers.edges.map(({ node }, index) =>
+          {data.allMysqlCustomers.edges.map(({ node }, index) =>
           (
             <tr key={index}>
               <td>{index+1}</td>
