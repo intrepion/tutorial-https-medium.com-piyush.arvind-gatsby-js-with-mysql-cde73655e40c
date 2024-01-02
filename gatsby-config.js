@@ -10,7 +10,7 @@
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 module.exports = {
   siteMetadata: {
@@ -44,6 +44,30 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+  ]
+};
+
+if (process.env.CYPRESS_SUPPORT == 'y')
+{
+  module.exports['plugins'].push(
+    {
+      resolve: `gatsby-source-mock`,
+      options: {
+        count: 10,
+        schema: {
+          CustomerID: (faker) => faker.random.alpha({ count: 5, upcase: true }),
+          CompanyName: `{{company.companyName}}`,
+          ContactName: `{{name.firstName}} {{name.lastName}}`,
+          ContactTitle: `{{name.jobTitle}}`,
+          Address: `{{address.streetAddress}}`,
+        },
+        seed: 123456,
+        type: `Customers`,
+      },
+    }
+  );
+} else {
+  module.exports['plugins'].push(
     {
       resolve: `gatsby-source-mysql`,
       options: {
@@ -66,6 +90,6 @@ module.exports = {
           },
         ],
       },
-    },
-  ],
+    }
+  );
 }
