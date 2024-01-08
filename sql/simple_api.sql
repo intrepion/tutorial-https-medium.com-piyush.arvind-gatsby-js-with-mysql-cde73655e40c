@@ -1,5 +1,3 @@
-USE simple_api;
-
 CREATE TABLE customers (
     CustomerID VARCHAR(255) NOT NULL,
     CompanyName VARCHAR(255),

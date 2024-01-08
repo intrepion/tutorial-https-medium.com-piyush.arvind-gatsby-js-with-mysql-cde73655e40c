@@ -44,30 +44,6 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-  ]
-};
-
-if (process.env.CYPRESS_SUPPORT == 'y')
-{
-  module.exports['plugins'].push(
-    {
-      resolve: `gatsby-source-mock`,
-      options: {
-        count: 10,
-        schema: {
-          CustomerID: (faker) => faker.random.alpha({ count: 5, upcase: true }),
-          CompanyName: `{{company.companyName}}`,
-          ContactName: `{{name.firstName}} {{name.lastName}}`,
-          ContactTitle: `{{name.jobTitle}}`,
-          Address: `{{address.streetAddress}}`,
-        },
-        seed: 123456,
-        type: `MysqlCustomers`,
-      },
-    }
-  );
-} else {
-  module.exports['plugins'].push(
     {
       resolve: `gatsby-source-mysql`,
       options: {
@@ -77,6 +53,7 @@ if (process.env.CYPRESS_SUPPORT == 'y')
           password: process.env.MYSQL_PASSWORD,
           user: process.env.MYSQL_USER,
         },
+        fileName: './SimpleApi.db',
         queries: [
           {
             statement: 'SELECT * FROM customers',
@@ -90,6 +67,6 @@ if (process.env.CYPRESS_SUPPORT == 'y')
           },
         ],
       },
-    }
-  );
-}
+    },
+  ],
+};

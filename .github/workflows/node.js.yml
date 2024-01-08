@@ -27,4 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: cat sql/simple_api.sql | sqlite3 SimpleApi.db
+    - run: sed -i 's/mysql/sqlite/' ./gatsby-config.js
+    - run: sed -i 's/Mysql/Sqlite/' ./src/pages/page-2.js
     - run: npm run test:e2e:ci
