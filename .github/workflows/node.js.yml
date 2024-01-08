@@ -28,6 +28,6 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: cat sql/simple_api.sql | sqlite3 SimpleApi.db
-    - run: sed -i 's/mysql/sqlite/' ./gatsby-config.js
-    - run: sed -i 's/Mysql/Sqlite/' ./src/pages/page-2.js
+    - run: sed -i 's/gatsby-source-mysql/gatsby-source-sqlite/' ./gatsby-config.js
+    - run: grep -rl 'allMysql' ./src | xargs sed -i 's/allMysql/allSqlite/g'
     - run: npm run test:e2e:ci
