@@ -14,12 +14,40 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      MYSQL_DB: sample_mysql_test
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: testuser
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.MYSQL_DB }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     strategy:
       matrix:
         node-version: [ 18, 20 ]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: Debug
+      run: |
+        mysql --host=${{ env.MYSQL_HOST }} --user=${{ env.MYSQL_USER }} --password=${{ env.MYSQL_PASSWORD }} ${{ env.MYSQL_DB }} <<MY_QUERY
+        SHOW GRANTS;
+        MY_QUERY
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -27,7 +55,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: cat sql/simple_api.sql | sqlite3 SimpleApi.db
-    - run: sed -i 's/gatsby-source-mysql/gatsby-source-sqlite/' ./gatsby-config.js
-    - run: grep -rl 'allMysql' ./src | xargs sed -i 's/allMysql/allSqlite/g'
     - run: npm run test:e2e:ci
